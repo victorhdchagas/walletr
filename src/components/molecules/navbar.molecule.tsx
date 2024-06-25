@@ -14,7 +14,7 @@ export default function NavbarMolecule({ user }: { user: User | undefined }) {
         Home
       </NavLink>
       <NavLink
-        to="/dashboard"
+        to="/account"
         className={({ isActive, isPending }) =>
           isActive ? 'text-slate-200' : isPending ? 'text-slate-400' : ''
         }

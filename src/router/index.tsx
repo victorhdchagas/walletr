@@ -1,5 +1,5 @@
 import { myUseCases, useCasesContext } from '@contexts/useCases.context'
-import DashboardPage from '@pages/dashboard/index.page'
+import DashboardPage from '@pages/protected/dashboard/index.page'
 import IndexPage from '@pages/index.page'
 import SignInPage from '@pages/login/signin.page'
 import IndexTemplate from '@templates/index.template'
@@ -8,6 +8,7 @@ import { ProtectedLoader } from './loaders/protected.Loader'
 import SignInAction from './actions/signIn.action'
 import SignUpAction from './actions/signup.action'
 import SignUpPage from '@pages/login/signup.page'
+import ProtectedTemplate from '@templates/protected.template'
 
 export default function ReactRouterIndex() {
   const useCases = useCasesContext()
@@ -52,9 +53,10 @@ export default function ReactRouterIndex() {
           Component: SignUpPage,
         },
         {
-          path: 'dashboard',
-          Component: DashboardPage,
+          path: 'account',
+          Component: ProtectedTemplate,
           loader: ProtectedLoader,
+          children: [{ index: true, Component: DashboardPage }],
         },
       ],
     },
