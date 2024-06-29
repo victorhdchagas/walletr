@@ -27,6 +27,7 @@
       "@pages/*": ["pages/*"],
       "@components/*": ["components/*"],
       "@contexts/*": ["context/*"],
+      "@lib/*": ["lib/*"],
       "@templates/*": ["templates/*"]
     }
   },

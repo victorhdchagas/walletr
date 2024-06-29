@@ -13,8 +13,8 @@ export default class AuthenticateUserUseCase {
       property: 'email',
       value: email,
     })
-    if (!user) throw new Error('User not found')
+    if (!user || user.length !== 1) throw new Error('User not found')
 
-    return this.repository.create({ userId: user.id })
+    return this.repository.create({ userId: user[0].id })
   }
 }

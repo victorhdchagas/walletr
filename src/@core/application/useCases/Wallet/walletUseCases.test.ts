@@ -90,6 +90,7 @@ test('Should append transaction to Wallet', async () => {
     'test',
     50,
     'test',
+    'test',
     new Date(),
     new Date(),
   )

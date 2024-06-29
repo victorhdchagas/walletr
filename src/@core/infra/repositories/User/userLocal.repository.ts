@@ -8,7 +8,7 @@ export default class UserLocalRepository
 {
   async getByProperty(
     ...input: CompositeProperty<User, keyof User, string | Person | undefined>[]
-  ): Promise<User | undefined> {
+  ): Promise<User[] | undefined> {
     const data = localStorage.getItem(this.key)
     if (!data) return undefined
     return JSON.parse(data).find(

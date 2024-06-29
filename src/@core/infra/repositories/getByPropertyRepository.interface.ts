@@ -5,5 +5,5 @@ export interface CompositeProperty<T, K extends keyof T, V extends T[K]> {
 export default interface GetByPropertyRepositoryInterface<T> {
   getByProperty(
     ...input: CompositeProperty<T, keyof T, T[keyof T]>[]
-  ): Promise<T | undefined>
+  ): Promise<T[] | undefined>
 }

@@ -8,6 +8,7 @@ beforeEach(() => {
     'test',
     100,
     '',
+    '',
     new Date(),
     new Date(),
   )
@@ -16,6 +17,7 @@ beforeEach(() => {
     'test',
     'test2',
     -60,
+    '',
     '',
     new Date(),
     new Date(),

@@ -1,4 +1,4 @@
-import Wallet from 'src/@core/domain/entities/Wallet.entity'
+import Wallet from '@core/domain/entities/Wallet.entity'
 import SyncStorageInterface from '../SyncStorageInterface.repository'
 
 export default class WalletLocalStorageRepository

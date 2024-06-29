@@ -7,6 +7,6 @@ export default class existsUserSessionUseCase {
   ) {}
 
   execute(token?: string) {
-    this.repo.getByProperty({ property: 'email', value: token })
+    return this.repo.getByProperty({ property: 'email', value: token })
   }
 }

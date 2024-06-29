@@ -12,11 +12,15 @@ export default class Wallet {
     public name: string,
     public userId: string,
     public transactions: Transaction[] = [],
-    public createdAt: Date,
-    public updatedAt: Date,
+    public createdAt: Date = new Date(),
+    public updatedAt: Date = new Date(),
   ) {}
 
   get balance() {
+    console.log(
+      'balance',
+      this.transactions.reduce((acc, item) => acc + item.price, 0),
+    )
     return this.transactions.reduce((acc, item) => acc + item.price, 0)
   }
 

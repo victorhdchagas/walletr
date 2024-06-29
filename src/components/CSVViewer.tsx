@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react'
 import Papa, { ParseResult } from 'papaparse'
 import mockedFile from '../mock/file.json'
-import CheckboxListAtom, {
-  CheckboxListItemAtomProps,
-} from './atoms/inputs/checkboxList'
+import CheckboxListAtom from './atoms/inputs/checkboxList'
 import { useFileContext } from '../context/useFileContext'
-import CheckboxItemAtom from './atoms/inputs/checkboxItem.atom'
+import CheckboxItemAtom, {
+  CheckboxListItemAtomProps,
+} from './atoms/inputs/checkboxItem.atom'
 
 export default function CSVViewer() {
   const { file, parserConfig } = useFileContext()
   const [headers, setHeaders] = useState<CheckboxListItemAtomProps[]>(
     mockedFile[0].map((value) => ({ checked: false, label: value })),
   )
-  const [systemHeaders, setSystemHeaders] = useState<
-    CheckboxListItemAtomProps[]
-  >(
+  const [systemHeaders] = useState<CheckboxListItemAtomProps[]>(
     [
       'date',
       'category',
@@ -27,7 +25,7 @@ export default function CSVViewer() {
     ].map((value) => ({ checked: false, label: value })),
   )
   const [data, setData] = useState<string[][]>(mockedFile)
-  const [isPreviewing, setIsPreviewing] = useState(false)
+  const [isPreviewing] = useState(false)
   useEffect(() => {
     if (file) {
       // @ts-expect-error ts-migrate(2554) FIXME: Expected 1 arguments, but got 0.

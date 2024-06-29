@@ -12,7 +12,7 @@ test('Should create a user into db', async () => {
   const useCase = new GetUserUseCase(repository)
   const appendUseCase = new CreateUserUseCase(repository)
 
-  await appendUseCase.execute(user)
+  await appendUseCase.execute(user.email)
 
   const data = await useCase.execute(user.id)
   expect(data).toHaveProperty('email', 'email2@test.com')
