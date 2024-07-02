@@ -7,16 +7,16 @@ export default async function UpdateTransactionAction(formData: FormData) {
     if (!data.name) return { error: 'Name is required' }
     if (!data.price && isNaN(Number(data.price)))
       return { error: 'Price is required' }
-    const target = formData.get('target') as string | undefined
+    const targetId = formData.get('targetId') as string | undefined
     const description = formData.get('description') as string | undefined
 
-    const oldTransaction = await myUseCases.wallet.getTransactionById.execute(
+    const oldTransaction = await myUseCases.transaction.getbyId.execute(
       formData.get('id') as string,
     )
     if (!oldTransaction) return { error: 'Transaction not found' }
-    await myUseCases.wallet.createOrEditTransaction.execute({
+    await myUseCases.transaction.createOrUpdate.execute(oldTransaction.id, {
       ...oldTransaction,
-      target: target ?? oldTransaction.target,
+      targetId: targetId ?? oldTransaction.targetId,
       description: description ?? oldTransaction.description,
       updatedAt: new Date(),
       name: formData.get('name') as string,

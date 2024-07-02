@@ -6,11 +6,13 @@ export default async function SignInAction({ request }: LoaderFunctionArgs) {
   const email = formData.get('email') as string | null
   if (!email) return { error: 'Email is required' }
   try {
-    await myUseCases.session.authenticateUser.execute(email)
+    const token = await myUseCases.session.authenticateUser.execute(email)
+    localStorage.setItem('session', token)
   } catch (error) {
+    console.error(error)
     return { error }
   }
 
   const redirectTo = formData.get('redirectTo') as string | null
-  return redirect(redirectTo || '/dashboard')
+  return redirect(redirectTo || '/account')
 }

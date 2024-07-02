@@ -1,3 +1,3 @@
 export default interface AddRepositoryInterface<T> {
-  add(data: T): Promise<void>
+  add(input: T): Promise<void>
 }

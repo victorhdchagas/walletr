@@ -9,7 +9,7 @@ import {
 export default function SignUpPage() {
   const location = useLocation()
   const params = new URLSearchParams(location.search)
-  const from = params.get('from') || '/dashboard'
+  const from = params.get('from') || '/account'
   const navigation = useNavigation()
   const isSigningUp = navigation.formData?.get('email') != null
   const actionData = useActionData() as { error: string } | undefined

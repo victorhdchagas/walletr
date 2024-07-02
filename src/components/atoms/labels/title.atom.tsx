@@ -6,7 +6,7 @@ export default function TitleAtom({
 }: React.PropsWithChildren<{ className?: string }>) {
   return (
     <span
-      className={'text-lg text-emerald-400 font-semibold font-sans'.concat(
+      className={'text-lg text-emerald-400 font-semibold font-sans '.concat(
         className ?? '',
       )}
     >

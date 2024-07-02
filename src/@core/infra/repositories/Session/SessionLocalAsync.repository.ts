@@ -25,13 +25,14 @@ export default class SessionLocalAsyncRepository
     }
     return null
   }
-  async create(input: { userId: string }): Promise<void> {
+  async create(input: { userId: string }): Promise<string> {
     //todo: 7 dias pra expirar
+    const token = crypto.randomUUID()
     localStorage.setItem(
       this.key,
       JSON.stringify(
         new Session(
-          crypto.randomUUID(),
+          token,
           crypto.randomUUID(),
           input.userId,
           new Date(),
@@ -41,6 +42,7 @@ export default class SessionLocalAsyncRepository
         ),
       ),
     )
+    return token
   }
   async isValid(input: string): Promise<boolean> {
     const currentSession: Session | null = JSON.parse(

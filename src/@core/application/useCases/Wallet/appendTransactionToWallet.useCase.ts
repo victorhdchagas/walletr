@@ -1,8 +1,8 @@
 import Transaction from '@core/domain/entities/Transaction.entity'
-import WalletLocalStorageRepository from '@core/infra/repositories/Wallet/WalletAsync.repository'
+import WalletAsyncRepositoryInterface from '@core/infra/repositories/Wallet/WalletAsyncRepository.interface'
 
 export default class AppendTransactionToWalletUseCase {
-  constructor(private readonly repo: WalletLocalStorageRepository) {}
+  constructor(private readonly repo: WalletAsyncRepositoryInterface) {}
 
   async execute(transaction: Transaction) {
     return this.repo.appendTransaction(transaction)

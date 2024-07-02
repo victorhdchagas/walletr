@@ -9,15 +9,7 @@ export default class WalletLocalStorageRepository
   key = 'WALLETS_KEY'
   constructor() {}
   async getByProperty(
-    ...input: CompositeProperty<
-      Wallet,
-      keyof Wallet,
-      | string
-      | number
-      | Transaction[]
-      | Date
-      | ((transaction: Transaction) => void)
-    >[]
+    ...input: CompositeProperty<Wallet>[]
   ): Promise<Wallet[] | undefined> {
     const data = localStorage.getItem(this.key)
     if (!data) return undefined
@@ -42,7 +34,6 @@ export default class WalletLocalStorageRepository
     )
     if (transactionIndex < 0) walletStorage.transactions.push(data)
     else walletStorage.transactions[transactionIndex] = data
-    console.log(data)
     await this.set(walletStorage)
   }
   async add(data: Wallet) {
@@ -74,7 +65,7 @@ export default class WalletLocalStorageRepository
                   transaction.walletId,
                   transaction.name,
                   transaction.price,
-                  transaction.target,
+                  transaction.targetId,
                   transaction.description,
                   new Date(transaction.createdAt),
                   new Date(transaction.updatedAt),

@@ -8,6 +8,7 @@ export default async function SignUpAction({ request }: LoaderFunctionArgs) {
   try {
     await myUseCases.user.createUser.execute(email)
   } catch (error) {
+    console.error(error)
     return { error }
   }
 

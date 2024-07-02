@@ -8,7 +8,6 @@ export default function ListTransactions({
   transactions: Transaction[]
 }) {
   const pathname = useLocation().pathname
-  console.log(pathname)
   const fetcher = useFetcher()
   return (
     <div>
@@ -34,7 +33,7 @@ export default function ListTransactions({
                 </Link>
               </td>
               <td>{formatCurrency(transaction.price)}</td>
-              <td>{transaction.target}</td>
+              <td>{transaction.target?.name}</td>
               <td>{transaction.description}</td>
               <td>{transaction.createdAt.toLocaleDateString('pt-BR')}</td>
               <td>{transaction.updatedAt.toLocaleDateString('pt-BR')}</td>

@@ -1,10 +1,10 @@
 import User from '@core/domain/entities/User.entity'
-import SessionLocalAsyncRepository from '@core/infra/repositories/Session/SessionLocalAsync.repository'
+import SessionAsyncRepositoryInterface from '@core/infra/repositories/Session/SessionAsyncRepository.interface'
 import UserLocalStorageAsyncRepositoryInterface from '@core/infra/repositories/User/userLocalStorageAsync.repository'
 
 export default class AuthenticateUserUseCase {
   constructor(
-    private readonly repository: SessionLocalAsyncRepository,
+    private readonly repository: SessionAsyncRepositoryInterface,
     private readonly userRepo: UserLocalStorageAsyncRepositoryInterface<User>,
   ) {}
 

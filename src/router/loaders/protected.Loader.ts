@@ -2,7 +2,9 @@ import { myUseCases } from '@contexts/useCases.context'
 import { LoaderFunctionArgs, redirect } from 'react-router-dom'
 
 export async function ProtectedLoader({ request }: LoaderFunctionArgs) {
-  const user = await myUseCases.session.GetAuthenticatedUser.execute()
+  const user = await myUseCases.session.GetAuthenticatedUser.execute(
+    localStorage.getItem('session') ?? '',
+  )
   if (!user) {
     const params = new URLSearchParams()
     params.set('from', new URL(request.url).pathname)

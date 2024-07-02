@@ -1,7 +1,7 @@
 {
-  "name": "wallet_frontend",
+  "name": "my_wallet",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,6 +12,7 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "dexie": "^4.0.7",
     "papaparse": "^5.4.1",
     "react": "19.0.0-rc-58af67a8f8-20240628",
     "react-dom": "19.0.0-rc-58af67a8f8-20240628",

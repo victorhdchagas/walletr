@@ -1,13 +1,16 @@
+import Person from './Person.entity'
+
 export default class Transaction {
   constructor(
     public id: string,
     public walletId: string,
     public name: string,
     public price: number,
-    public target: string,
+    public targetId: string,
     public description: string,
     public createdAt: Date,
     public updatedAt: Date,
+    public target?: Person,
   ) {}
 
   static validate(data: unknown) {
@@ -31,7 +34,7 @@ export default class Transaction {
     name: string,
     price: number,
     walletId: string,
-    target: string = 'none',
+    targetId: string = 'none',
     description: string = '',
   ) {
     return new Transaction(
@@ -39,7 +42,7 @@ export default class Transaction {
       walletId,
       name,
       price,
-      target,
+      targetId,
       description,
       new Date(),
       new Date(),

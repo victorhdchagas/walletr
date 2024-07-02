@@ -1,3 +1,3 @@
 export default interface SetRepositoryInterface<T> {
-  set(data: T): Promise<void>
+  set(input: T): Promise<void>
 }

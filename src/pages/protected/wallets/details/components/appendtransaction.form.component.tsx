@@ -9,7 +9,8 @@ export default function AppendTransactionForm({
   transaction: Partial<Transaction>
 }) {
   const submit = useSubmit()
-  const { description, id, name, price, walletId, target } = transaction
+  const { description, id, name, price, walletId, targetId, target } =
+    transaction
   const ref = useRef<HTMLFormElement>(null)
   return (
     <Form
@@ -50,9 +51,10 @@ export default function AppendTransactionForm({
         type="text"
         id="target"
         name="target"
-        defaultValue={target ?? 'none'}
+        defaultValue={target?.name || 'none'}
       />
 
+      <input type="hidden" id="targetId" defaultValue={targetId} />
       <input
         type="hidden"
         id="walletId"

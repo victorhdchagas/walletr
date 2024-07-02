@@ -17,14 +17,6 @@ export default class Wallet {
   ) {}
 
   get balance() {
-    console.log(
-      'balance',
-      this.transactions.reduce((acc, item) => acc + item.price, 0),
-    )
     return this.transactions.reduce((acc, item) => acc + item.price, 0)
-  }
-
-  addTransaction(transaction: Transaction) {
-    this.transactions.push(transaction)
   }
 }

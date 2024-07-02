@@ -10,7 +10,6 @@ export default class RemoveTransactionUseCase {
       property: 'id',
       value: walletId,
     })
-    console.log('wallet', wallets)
     if (!wallets || wallets.length === 0) throw new Error('Wallet not found')
     const wallet = wallets[0]
     const transactionIndex = wallet.transactions.findIndex(

@@ -27,7 +27,7 @@ export default function AsideMenuMolecule() {
           </NavLink>
         </li>
 
-        <li>
+        <li className="hidden">
           <NavLink
             to="/account/transactions"
             className={({ isActive, isPending }) =>
@@ -35,6 +35,26 @@ export default function AsideMenuMolecule() {
             }
           >
             Transactions
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/config/templates"
+            className={({ isActive, isPending }) =>
+              isActive ? 'text-slate-200' : isPending ? 'text-slate-400' : ''
+            }
+          >
+            Templates
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/config/persons"
+            className={({ isActive, isPending }) =>
+              isActive ? 'text-slate-200' : isPending ? 'text-slate-400' : ''
+            }
+          >
+            Persons
           </NavLink>
         </li>
       </ul>

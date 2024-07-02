@@ -1,9 +1,9 @@
-import SessionLocalAsyncRepository from '@core/infra/repositories/Session/SessionLocalAsync.repository'
+import SessionAsyncRepositoryInterface from '@core/infra/repositories/Session/SessionAsyncRepository.interface'
 
 export default class LogoutSessionUseCase {
-  constructor(private readonly repository: SessionLocalAsyncRepository) {}
+  constructor(private readonly repository: SessionAsyncRepositoryInterface) {}
 
   async execute() {
-    return this.repository.remove()
+    return this.repository.remove('')
   }
 }
