@@ -5,6 +5,7 @@ import Dexie, { EntityTable } from 'dexie'
 import packageJson from '../../../../package.json'
 import User from '@core/domain/entities/User.entity'
 import Session from '@core/domain/entities/Session.entity'
+import Template from '@core/domain/entities/Template.entity'
 
 export default class OfflineDatabase extends Dexie {
   wallets!: EntityTable<Wallet, 'id'>
@@ -12,6 +13,7 @@ export default class OfflineDatabase extends Dexie {
   persons!: EntityTable<Person, 'id'>
   users!: EntityTable<User, 'id'>
   sessions!: EntityTable<Session, 'id'>
+  templates!: EntityTable<Template, 'id'>
   /**
    *
    */
@@ -24,6 +26,7 @@ export default class OfflineDatabase extends Dexie {
       persons: 'id, name, createdAt',
       users: 'id, name, createdAt, &email',
       sessions: 'id,token,createdAt,userId',
+      templates: 'id,name, userId',
     })
   }
 }

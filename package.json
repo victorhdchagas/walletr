@@ -12,11 +12,13 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.7",
     "dexie": "^4.0.7",
     "papaparse": "^5.4.1",
     "react": "19.0.0-rc-58af67a8f8-20240628",
     "react-dom": "19.0.0-rc-58af67a8f8-20240628",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.24.7",

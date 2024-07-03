@@ -7,6 +7,13 @@ import AuthenticateUserUseCase from '@core/application/useCases/Session/authenti
 import GetAuthenticatedUserUseCase from '@core/application/useCases/Session/getAuthenticatedUser.useCase'
 import LogoutSessionUseCase from '@core/application/useCases/Session/logoutSession.useCase'
 import SessionIsValidUserUseCase from '@core/application/useCases/Session/sessionIsValidUser.useCase'
+import AppendTemplateItemUseCase from '@core/application/useCases/Templates/appendTemplateItem.useCase'
+import CreateTemplateUseCase from '@core/application/useCases/Templates/createTemplate.useCase'
+import GetTemplateItemsUseCase from '@core/application/useCases/Templates/getTemplateItems.useCase'
+import GetTemplateByUserUseCase from '@core/application/useCases/Templates/getTemplatesByUser.useCase'
+import RemoveTemplateUseCase from '@core/application/useCases/Templates/removeTemplate.useCase'
+import SetTemplateUseCase from '@core/application/useCases/Templates/setTemplate.useCase'
+import UpdateTemplateItemUseCase from '@core/application/useCases/Templates/updateTemplateItem.useCase'
 import RemoveTransactionUseCase from '@core/application/useCases/Transactions/RemoveTransaction.useCase'
 import CreateOrUpdateTransactionUseCase from '@core/application/useCases/Transactions/createOrUpdateTransaction.useCase'
 import CreateTransactionUseCase from '@core/application/useCases/Transactions/createTransaction.useCase'
@@ -24,6 +31,7 @@ import getWalletByPropertiesUseCase from '@core/application/useCases/Wallet/getW
 import RemoveWalletUseCase from '@core/application/useCases/Wallet/removeWallet.useCase'
 import PersonDexieRepository from '@core/infra/repositories/Person/personDexie.repository'
 import SessionDexieRepository from '@core/infra/repositories/Session/SessionDexie.repository'
+import TemplateDexieRepository from '@core/infra/repositories/Template/TemplateDexie.repository'
 import TransactionDexieRepository from '@core/infra/repositories/Transaction/transactionDexie.repository'
 // import SessionLocalAsyncRepository from '@core/infra/repositories/Session/SessionLocalAsync.repository'
 import UserDexieRepository from '@core/infra/repositories/User/userDexie.repository'
@@ -39,8 +47,18 @@ const walletDixieRepository = new WalletDexieRepository()
 const transactionDexieRepository = new TransactionDexieRepository()
 // const personStorage = new PersonLocalStorageRepository()
 const personDexieStorage = new PersonDexieRepository()
+const templateDexieRepository = new TemplateDexieRepository()
 const userDexieStorage = new UserDexieRepository()
 export const myUseCases = {
+  templates: {
+    create: new CreateTemplateUseCase(templateDexieRepository),
+    getItems: new GetTemplateItemsUseCase(templateDexieRepository),
+    set: new SetTemplateUseCase(templateDexieRepository),
+    getByUserid: new GetTemplateByUserUseCase(templateDexieRepository),
+    remove: new RemoveTemplateUseCase(templateDexieRepository),
+    appendItem: new AppendTemplateItemUseCase(templateDexieRepository),
+    updateItem: new UpdateTemplateItemUseCase(templateDexieRepository),
+  },
   user: {
     getUser: new GetUserUseCase(userDexieStorage),
     getUserByProperty: new getUserByPropertyUseCase(userDexieStorage),
