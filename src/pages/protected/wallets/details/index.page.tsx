@@ -1,53 +1,59 @@
-import PageTitleMolecule from '@components/molecules/pagetitle.molecule'
 import Wallet from '@core/domain/entities/Wallet.entity'
 import { formatCurrency } from '@lib/utils'
-import { Link, useLoaderData } from 'react-router-dom'
-import AppendTransactionForm from './components/appendtransaction.form.component'
-import ListTransactions from './components/listtransaction.component'
+import { Link, Outlet, useLoaderData, useLocation } from 'react-router-dom'
 import Transaction from '@core/domain/entities/Transaction.entity'
+import SessionHeaderMolecule from '@components/molecules/sessionHeader.molecule'
+import { PlusSquare } from '@phosphor-icons/react'
+import ListTransactions from './components/TransactionList.component'
 
 export default function WalletDetailsPage() {
+  const location = useLocation()
   const loaderData = useLoaderData() as {
     wallet: Wallet
     transaction?: Transaction
-  } | null
-  const wallet = loaderData!.wallet
+  }
+  const wallet = loaderData.wallet
 
-  const editingTransaction = loaderData!.transaction
+  //   const editingTransaction = loaderData!.transaction
 
   return (
     <section>
-      <PageTitleMolecule>{wallet.name}</PageTitleMolecule>
-      <div className="flex flex-row justify-start items-start gap-4 h-fit">
-        <table>
+      <SessionHeaderMolecule title={wallet.name}>
+        <Link
+          to={`/account/wallets/${wallet.id}/transactions/create`}
+          state={{ backgroundLocation: location }}
+        >
+          <PlusSquare
+            size={32}
+            className="text-emerald-400 cursor-pointer  rounded-md "
+          />
+        </Link>
+      </SessionHeaderMolecule>
+      <div className="flex flex-col justify-start items-start gap-4 h-fit flex-1 w-full">
+        <table className="w-full border-collapse border-b-4 border-r-4 rounded-lg border-double border-emerald-500 mt-2 ">
           <thead>
             <tr>
-              <th className="min-w-32 text-left">Key</th>
-              <th className="min-w-32 text-left">Value</th>
+              <td className="min-w-32">Balance</td>
+              <td className="">Transactions</td>
+              <td className="">Created</td>
+              <td className="">Updated</td>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td className="min-w-32">Balance</td>
               <td>{formatCurrency(wallet.balance ?? 0)}</td>
-            </tr>
-            <tr>
-              <td>Transactions</td>
               <td>{wallet.transactions.length}</td>
-            </tr>
-            <tr>
-              <td>Created</td>
               <td>{wallet.createdAt.toLocaleDateString('pt-BR')}</td>
-            </tr>
-            <tr>
-              <td>Updated</td>
               <td>{wallet.updatedAt.toLocaleDateString('pt-BR')}</td>
+            </tr>
+            <tr className="h-4">
+              <td colSpan={4}></td>
             </tr>
           </tbody>
         </table>
-        <AppendTransactionForm
+        {/* <AppendTransactionForm
           transaction={editingTransaction ?? { walletId: wallet.id }}
-        />
+        /> */}
       </div>
       <Link to="./..">Back</Link>
       {wallet.transactions.length > 0 && (
@@ -56,6 +62,7 @@ export default function WalletDetailsPage() {
           <Link to="./..">Back</Link>
         </>
       )}
+      <Outlet />
     </section>
   )
 }

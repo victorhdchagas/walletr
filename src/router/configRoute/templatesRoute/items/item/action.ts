@@ -35,7 +35,6 @@ const templateItemAction: ActionFunction = async ({ request, params }) => {
   }
   if (method === 'delete') {
     if (!params.itemId) throw new Error('Item id not found')
-    console.log(params)
     await myUseCases.templates.removeItem.execute(params.id, params.itemId)
   }
 

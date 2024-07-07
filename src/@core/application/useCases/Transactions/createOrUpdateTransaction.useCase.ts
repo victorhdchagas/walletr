@@ -15,7 +15,6 @@ export default class CreateOrUpdateTransactionUseCase {
     if (!transaction.targetId) throw new Error('Target id is required')
     if (!transaction.price) throw new Error('Price is required')
     if (!transaction.name) throw new Error('Name is required')
-    console.log(transaction)
     return await this.repository.create(
       Transaction.createInstance(
         transaction.name,

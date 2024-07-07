@@ -9,7 +9,7 @@ import SignInAction from './actions/signIn.action'
 import SignUpAction from './actions/signup.action'
 import { getAuthenticatedLoader } from './loaders/getAuthenticated.Loader'
 import { ProtectedLoader } from './loaders/protected.Loader'
-import WalletRoutes from './wallets.route'
+import WalletRoutes from './wallets/wallets.route'
 import ConfigRoutes from './configRoute/config.route'
 
 export default function ReactRouterIndex() {

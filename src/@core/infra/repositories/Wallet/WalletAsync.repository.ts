@@ -34,7 +34,7 @@ export default class WalletLocalStorageRepository
     )
     if (transactionIndex < 0) walletStorage.transactions.push(data)
     else walletStorage.transactions[transactionIndex] = data
-    await this.set(walletStorage)
+    await this.set(walletStorage.id, walletStorage)
   }
   async add(data: Wallet) {
     const toAppend = await this.getAll()
@@ -79,11 +79,9 @@ export default class WalletLocalStorageRepository
         return wallet.id === key
       })
   }
-  async set(data: Wallet) {
+  async set(id: string, data: Wallet) {
     const fullWallet = await this.getAll()
-    const index = fullWallet.findIndex(
-      (wallet: Wallet) => wallet.id === data.id,
-    )
+    const index = fullWallet.findIndex((wallet: Wallet) => wallet.id === id)
     fullWallet[index] = data
     localStorage.setItem(this.key, JSON.stringify(fullWallet))
     return

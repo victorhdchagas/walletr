@@ -30,6 +30,7 @@ import getWalletUseCase from '@core/application/useCases/Wallet/getWallet.useCas
 import getWalletByPropertiesUseCase from '@core/application/useCases/Wallet/getWalletByProperties.useCase'
 // import RemoveTransactionUseCase from '@core/application/useCases/Wallet/removeTransaction.useCase'
 import RemoveWalletUseCase from '@core/application/useCases/Wallet/removeWallet.useCase'
+import UpdateWalletUseCase from '@core/application/useCases/Wallet/updateWallet.useCase'
 import PersonDexieRepository from '@core/infra/repositories/Person/personDexie.repository'
 import SessionDexieRepository from '@core/infra/repositories/Session/SessionDexie.repository'
 import TemplateDexieRepository from '@core/infra/repositories/Template/TemplateDexie.repository'
@@ -94,6 +95,7 @@ export const myUseCases = {
     getByProperty: new getWalletByPropertiesUseCase(walletDixieRepository),
     getById: new getWalletUseCase(walletDixieRepository),
     remove: new RemoveWalletUseCase(walletDixieRepository),
+    update: new UpdateWalletUseCase(walletDixieRepository),
     // removeTransaction: new RemoveTransactionUseCase(walletDixieRepository),
     // createOrEditTransaction: new AppendTransactionToWalletUseCase(
     //   walletDixieRepository,
