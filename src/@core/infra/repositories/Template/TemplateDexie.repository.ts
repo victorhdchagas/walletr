@@ -16,7 +16,7 @@ export default class TemplateDexieRepository
   async appendItem(templateId: string, item: TemplateItem): Promise<void> {
     const template = await this.database.templates.get(templateId)
     if (!template) throw new Error('Template not found')
-    await this.database.templates.update('items', {
+    await this.database.templates.update(templateId, {
       ...template,
       items: [...template.items, item],
     })
@@ -31,7 +31,7 @@ export default class TemplateDexieRepository
     const index = template.items.findIndex((i) => i.id === item.id)
     if (index < 0) throw new Error('Item not found')
     template.items[index] = { ...template.items[index], ...item }
-    await this.database.templates.update('items', {
+    await this.database.templates.update(templateId, {
       ...template,
       items: [...template.items],
     })
@@ -42,10 +42,11 @@ export default class TemplateDexieRepository
     if (!template) throw new Error('Template not found')
     const index = template.items.findIndex((i) => i.id === itemId)
     if (index < 0) throw new Error('Item not found')
-    template.items.slice(index, 1)
-    await this.database.templates.update('items', {
+
+    template.items.splice(index, 1)
+    await this.database.templates.update(templateId, {
       ...template,
-      items: [...template.items],
+      items: template.items,
     })
     return
   }

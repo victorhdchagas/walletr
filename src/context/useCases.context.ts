@@ -12,6 +12,7 @@ import CreateTemplateUseCase from '@core/application/useCases/Templates/createTe
 import GetTemplateItemsUseCase from '@core/application/useCases/Templates/getTemplateItems.useCase'
 import GetTemplateByUserUseCase from '@core/application/useCases/Templates/getTemplatesByUser.useCase'
 import RemoveTemplateUseCase from '@core/application/useCases/Templates/removeTemplate.useCase'
+import RemoveTemplateItemUseCase from '@core/application/useCases/Templates/removeTemplateItem.useCase'
 import SetTemplateUseCase from '@core/application/useCases/Templates/setTemplate.useCase'
 import UpdateTemplateItemUseCase from '@core/application/useCases/Templates/updateTemplateItem.useCase'
 import RemoveTransactionUseCase from '@core/application/useCases/Transactions/RemoveTransaction.useCase'
@@ -58,6 +59,7 @@ export const myUseCases = {
     remove: new RemoveTemplateUseCase(templateDexieRepository),
     appendItem: new AppendTemplateItemUseCase(templateDexieRepository),
     updateItem: new UpdateTemplateItemUseCase(templateDexieRepository),
+    removeItem: new RemoveTemplateItemUseCase(templateDexieRepository),
   },
   user: {
     getUser: new GetUserUseCase(userDexieStorage),

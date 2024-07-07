@@ -11,7 +11,7 @@ export default function PortalMolecule({
     <PortalAtom>
       <div
         className={twMerge(
-          'fixed flex flex-col bg-black bg-opacity-60 h-screen w-screen top-0 left-0 z-10 justify-center items-center backdrop-blur-sm',
+          'fixed flex flex-col bg-black bg-opacity-40 h-screen w-screen top-0 left-0 z-10 justify-center items-center backdrop-blur-sm',
           visible ? 'visible' : 'invisible',
         )}
       >

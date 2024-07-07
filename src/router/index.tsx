@@ -10,7 +10,7 @@ import SignUpAction from './actions/signup.action'
 import { getAuthenticatedLoader } from './loaders/getAuthenticated.Loader'
 import { ProtectedLoader } from './loaders/protected.Loader'
 import WalletRoutes from './wallets.route'
-import ConfigRoutes from './config.route'
+import ConfigRoutes from './configRoute/config.route'
 
 export default function ReactRouterIndex() {
   const useCases = useCasesContext()
