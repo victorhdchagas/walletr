@@ -1,6 +1,6 @@
 import { ActionFunction } from 'react-router-dom'
 
-const templateItemsAction: ActionFunction = async ({ request }) => {
+const templateItemsAction: ActionFunction = async () => {
   return
 }
 

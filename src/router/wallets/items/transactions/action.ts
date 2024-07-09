@@ -26,16 +26,15 @@ const TransactionsAction: ActionFunction = async ({ request, params }) => {
         formData.get('target') as string,
         formData.get('targetId') as string,
       )
-      .then((person) => {
-        formData.set('targetId', person.id)
+      .then(async (person) => {
         formData.set('targetId', person.id)
 
         formData.delete('intent')
 
         if (intent === 'update') {
-          return UpdateTransactionAction(formData)
+          return await UpdateTransactionAction(formData)
         } else if (intent === 'add') {
-          return CreateTransactionAction(formData)
+          return await CreateTransactionAction(formData)
         }
       })
   }

@@ -1,6 +1,6 @@
 import WalletWithBalanceDTO from '@core/domain/dtos/wallets/wallet-with-balance.dto'
 import { formatCurrency } from '@lib/utils'
-import { MinusSquare, NotePencil } from '@phosphor-icons/react'
+import { FileXls, MinusSquare, NotePencil } from '@phosphor-icons/react'
 import { Link, useFetcher, useLocation } from 'react-router-dom'
 
 export default function WalletList({
@@ -44,7 +44,7 @@ export default function WalletList({
                   className="text-emerald-400 cursor-pointer  rounded-md hover:scale-110 transition-all"
                 />
               </Link>
-
+              <FileXls size={24} color="#1ce62e" weight="thin" />
               <fetcher.Form
                 method="delete"
                 action={`/account/wallets/${wallet.id}`}

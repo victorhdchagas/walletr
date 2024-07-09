@@ -1,6 +1,5 @@
 import User from '@core/domain/entities/User.entity'
 import UserLocalStorageAsyncRepositoryInterface from './userLocalStorageAsync.repository'
-import Person from '@core/domain/entities/Person.entity'
 import { CompositeProperty } from '../getByPropertyRepository.interface'
 import OfflineDatabase from '@core/infra/database/offlinedatabase.database'
 
@@ -16,7 +15,7 @@ export default class UserDexieRepository
     this.database = new OfflineDatabase()
   }
   async getByProperty(
-    ...input: CompositeProperty<User, keyof User, string | Person | undefined>[]
+    ...input: CompositeProperty<User>[]
   ): Promise<User[] | undefined> {
     return await this.database.users
       .where({ email: input[0].value })

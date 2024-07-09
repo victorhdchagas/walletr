@@ -17,6 +17,6 @@ export default class RemoveTransactionUseCase {
     )
     if (transactionIndex < 0) throw new Error('Transaction not found')
     wallet.transactions.splice(transactionIndex, 1)
-    await this.repository.set(wallet)
+    await this.repository.set(walletId, wallet)
   }
 }

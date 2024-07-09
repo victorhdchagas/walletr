@@ -5,6 +5,17 @@ import { CompositeProperty } from '../getByPropertyRepository.interface'
 export default class PersonLocalStorageRepository
   implements PersonRepositoryInterface
 {
+  key = 'PERSONS_KEY'
+
+  async getByName(name: string): Promise<Person[] | undefined> {
+    const data = localStorage.getItem(this.key)
+    if (!data) return undefined
+    return (JSON.parse(data) as Person[])
+      .map((person: Person) => {
+        return new Person(person.id, person.name)
+      })
+      .filter((person) => person.name.includes(name))
+  }
   async getAll(): Promise<Person[]> {
     const data = localStorage.getItem(this.key)
     if (!data) return []
@@ -12,7 +23,6 @@ export default class PersonLocalStorageRepository
       return new Person(person.id, person.name)
     })
   }
-  key = 'PERSONS_KEY'
   async add(input: Person): Promise<void> {
     const data = await this.getAll()
     data.push(input)

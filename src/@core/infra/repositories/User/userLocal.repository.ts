@@ -1,13 +1,12 @@
 import User from '@core/domain/entities/User.entity'
-import UserLocalStorageAsyncRepositoryInterface from './userLocalStorageAsync.repository'
-import Person from '@core/domain/entities/Person.entity'
 import { CompositeProperty } from '../getByPropertyRepository.interface'
+import UserLocalStorageAsyncRepositoryInterface from './userLocalStorageAsync.repository'
 
 export default class UserLocalRepository
   implements UserLocalStorageAsyncRepositoryInterface<User>
 {
   async getByProperty(
-    ...input: CompositeProperty<User, keyof User, string | Person | undefined>[]
+    ...input: CompositeProperty<User>[]
   ): Promise<User[] | undefined> {
     const data = localStorage.getItem(this.key)
     if (!data) return undefined
@@ -18,14 +17,7 @@ export default class UserLocalRepository
         ).length === input.length,
     )
   }
-  //   async getByProperty2(
-  //     property: keyof User,
-  //     value: string | Person | undefined,
-  //   ): Promise<User | undefined> {
-  //     const data = localStorage.getItem(this.key)
-  //     if (!data) return undefined
-  //     return JSON.parse(data).find((user: User) => user[property] === value)
-  //   }
+
   key = 'USERS_KEY'
   async add(data: User): Promise<void> {
     const toAppend = await this.getAll()

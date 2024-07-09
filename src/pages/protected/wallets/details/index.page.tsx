@@ -55,11 +55,11 @@ export default function WalletDetailsPage() {
           transaction={editingTransaction ?? { walletId: wallet.id }}
         /> */}
       </div>
-      <Link to="./..">Back</Link>
+      <Link to="/account/wallets">Back</Link>
       {wallet.transactions.length > 0 && (
         <>
           <ListTransactions transactions={wallet.transactions} />
-          <Link to="./..">Back</Link>
+          <Link to="/account/wallets">Back</Link>
         </>
       )}
       <Outlet />
