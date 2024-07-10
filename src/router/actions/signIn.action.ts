@@ -10,7 +10,9 @@ export default async function SignInAction({ request }: LoaderFunctionArgs) {
     localStorage.setItem('session', token)
   } catch (error) {
     console.error(error)
-    return { error }
+    if (error instanceof Error) return { error: error.message }
+    if (typeof error === 'string') return { error }
+    return { error: 'unknown error' }
   }
 
   const redirectTo = formData.get('redirectTo') as string | null

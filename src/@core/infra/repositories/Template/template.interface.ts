@@ -10,6 +10,7 @@ export default interface TemplateRepositoryInterface
   updateItem(templateId: string, item: Partial<TemplateItem>): Promise<void>
   removeItem(templateId: string, itemId: string): Promise<void>
   getByUserId(userId: string): Promise<Template[]>
+  get(templateId: string): Promise<Template | undefined>
   getItems(templateId: string): Promise<TemplateItem[]>
   set(
     templateId: string,

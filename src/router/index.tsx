@@ -11,6 +11,7 @@ import { getAuthenticatedLoader } from './loaders/getAuthenticated.Loader'
 import { ProtectedLoader } from './loaders/protected.Loader'
 import WalletRoutes from './wallets/wallets.route'
 import ConfigRoutes from './configRoute/config.route'
+import ErrorPage from '@pages/error.page'
 
 export default function ReactRouterIndex() {
   const useCases = useCasesContext()
@@ -20,6 +21,7 @@ export default function ReactRouterIndex() {
       path: '/',
       Component: IndexTemplate,
       loader: getAuthenticatedLoader,
+      ErrorBoundary: ErrorPage,
       children: [
         {
           index: true,
@@ -67,7 +69,7 @@ export default function ReactRouterIndex() {
       path: 'logout',
       action: async () => {
         return await myUseCases.session.logout
-          .execute()
+          .execute(localStorage.getItem('session') ?? '')
           .then(() => redirect('/signin'))
       },
     },

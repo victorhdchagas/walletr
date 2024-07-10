@@ -10,6 +10,9 @@ export default class TemplateDexieRepository
   constructor() {
     this.database = new OfflineDatabase()
   }
+  get(templateId: string): Promise<Template | undefined> {
+    return this.database.templates.get(templateId)
+  }
   getByUserId(userId: string): Promise<Template[]> {
     return this.database.templates.where('userId').equals(userId).toArray()
   }

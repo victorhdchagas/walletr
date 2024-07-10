@@ -14,7 +14,7 @@ export default function SessionHeaderMolecule({
         className,
       )}
     >
-      <TitleAtom className="w-full">{title}</TitleAtom>
+      <TitleAtom className="w-full text-2xl font-semibold">{title}</TitleAtom>
       {children}
     </div>
   )

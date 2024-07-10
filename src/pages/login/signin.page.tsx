@@ -1,3 +1,4 @@
+import ErrorAtom from '@components/atoms/labels/error.atom'
 import {
   Form,
   Link,
@@ -32,7 +33,9 @@ export default function SignInPage() {
         >
           {isLogginIn ? 'Autenticando...' : 'Autenticar'}
         </button>
-        {actionData?.error && <p>{actionData.error}</p>}
+        {actionData?.error !== undefined && (
+          <ErrorAtom>{actionData.error}</ErrorAtom>
+        )}
       </Form>
       <span className="text-sm">
         Não possui cadastro? <Link to="/signup">Clique aqui</Link>

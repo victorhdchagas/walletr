@@ -9,6 +9,7 @@ import LogoutSessionUseCase from '@core/application/useCases/Session/logoutSessi
 import SessionIsValidUserUseCase from '@core/application/useCases/Session/sessionIsValidUser.useCase'
 import AppendTemplateItemUseCase from '@core/application/useCases/Templates/appendTemplateItem.useCase'
 import CreateTemplateUseCase from '@core/application/useCases/Templates/createTemplate.useCase'
+import GetTemplateUseCase from '@core/application/useCases/Templates/getTemplate.useCase'
 import GetTemplateItemsUseCase from '@core/application/useCases/Templates/getTemplateItems.useCase'
 import GetTemplateByUserUseCase from '@core/application/useCases/Templates/getTemplatesByUser.useCase'
 import RemoveTemplateUseCase from '@core/application/useCases/Templates/removeTemplate.useCase'
@@ -23,31 +24,22 @@ import GetTransactionByWalletIdUseCase from '@core/application/useCases/Transact
 import CreateUserUseCase from '@core/application/useCases/User/createUser.useCase'
 import GetUserUseCase from '@core/application/useCases/User/getUser.useCase'
 import getUserByPropertyUseCase from '@core/application/useCases/User/getUserByProperty.useCase'
-// import GetWalletTransactionByIdUseCase from '@core/application/useCases/Wallet/GetWalletTransactionByIdUseCase'
 import AddWalletUseCase from '@core/application/useCases/Wallet/addWallet.useCase'
-// import AppendTransactionToWalletUseCase from '@core/application/useCases/Wallet/appendTransactionToWallet.useCase'
 import getWalletUseCase from '@core/application/useCases/Wallet/getWallet.useCase'
 import getWalletByPropertiesUseCase from '@core/application/useCases/Wallet/getWalletByProperties.useCase'
-// import RemoveTransactionUseCase from '@core/application/useCases/Wallet/removeTransaction.useCase'
 import RemoveWalletUseCase from '@core/application/useCases/Wallet/removeWallet.useCase'
 import UpdateWalletUseCase from '@core/application/useCases/Wallet/updateWallet.useCase'
 import PersonDexieRepository from '@core/infra/repositories/Person/personDexie.repository'
 import SessionDexieRepository from '@core/infra/repositories/Session/SessionDexie.repository'
 import TemplateDexieRepository from '@core/infra/repositories/Template/TemplateDexie.repository'
 import TransactionDexieRepository from '@core/infra/repositories/Transaction/transactionDexie.repository'
-// import SessionLocalAsyncRepository from '@core/infra/repositories/Session/SessionLocalAsync.repository'
 import UserDexieRepository from '@core/infra/repositories/User/userDexie.repository'
-// import UserLocalRepository from '@core/infra/repositories/User/userLocal.repository'
 import WalletDexieRepository from '@core/infra/repositories/Wallet/WalletDexie.repository'
 import { createContext, useContext } from 'react'
 
-// const userStorage = new UserLocalRepository()
-// const sessionStorage = new SessionLocalAsyncRepository()
 const sessionDexieStorage = new SessionDexieRepository()
-// const walletStorage = new WalletLocalStorageRepository()
 const walletDixieRepository = new WalletDexieRepository()
 const transactionDexieRepository = new TransactionDexieRepository()
-// const personStorage = new PersonLocalStorageRepository()
 const personDexieStorage = new PersonDexieRepository()
 const templateDexieRepository = new TemplateDexieRepository()
 const userDexieStorage = new UserDexieRepository()
@@ -57,6 +49,7 @@ export const myUseCases = {
     getItems: new GetTemplateItemsUseCase(templateDexieRepository),
     set: new SetTemplateUseCase(templateDexieRepository),
     getByUserid: new GetTemplateByUserUseCase(templateDexieRepository),
+    get: new GetTemplateUseCase(templateDexieRepository),
     remove: new RemoveTemplateUseCase(templateDexieRepository),
     appendItem: new AppendTemplateItemUseCase(templateDexieRepository),
     updateItem: new UpdateTemplateItemUseCase(templateDexieRepository),
@@ -96,13 +89,6 @@ export const myUseCases = {
     getById: new getWalletUseCase(walletDixieRepository),
     remove: new RemoveWalletUseCase(walletDixieRepository),
     update: new UpdateWalletUseCase(walletDixieRepository),
-    // removeTransaction: new RemoveTransactionUseCase(walletDixieRepository),
-    // createOrEditTransaction: new AppendTransactionToWalletUseCase(
-    //   walletDixieRepository,
-    // ),
-    // getTransactionById: new GetWalletTransactionByIdUseCase(
-    //   walletDixieRepository,
-    // ),
   },
   person: {
     getAll: new GetAllPersonsUseCase(personDexieStorage),

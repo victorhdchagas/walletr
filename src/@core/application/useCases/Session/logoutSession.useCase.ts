@@ -3,7 +3,7 @@ import SessionAsyncRepositoryInterface from '@core/infra/repositories/Session/Se
 export default class LogoutSessionUseCase {
   constructor(private readonly repository: SessionAsyncRepositoryInterface) {}
 
-  async execute() {
-    return this.repository.remove('')
+  async execute(sessionId: string) {
+    return this.repository.remove(sessionId)
   }
 }
