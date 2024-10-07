@@ -5,7 +5,6 @@ export default class CreateTransactionUseCase {
   constructor(private readonly repository: TransactionRepositoryInterface) {}
 
   async execute(transaction: Transaction) {
-    console.log('execute')
     return await this.repository.create(transaction)
   }
 }

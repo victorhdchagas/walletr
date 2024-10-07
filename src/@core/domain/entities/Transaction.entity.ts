@@ -20,13 +20,13 @@ export default class Transaction {
     if ('price' in data && typeof data['price'] !== 'number') return false
     if ('id' in data && typeof data['id'] !== 'string') return false
     if ('walletId' in data && typeof data['walletId'] !== 'string') return false
-    if ('target' in data && typeof data['target'] !== 'string') return false
+    // if ('target' in data && typeof data['target'] !== 'string') return false
     if ('description' in data && typeof data['description'] !== 'string')
       return false
-    if ('createdAt' in data && typeof data['createdAt'] !== 'string')
+    if ('createdAt' in data && !(data['createdAt'] instanceof Date))
       return false
-    if ('updatedAt' in data && typeof data['updatedAt'] !== 'string')
-      return false
+    // if ('updatedAt' in data && typeof data['updatedAt'] !== 'string')
+    //   return false
     return true
   }
 
@@ -36,7 +36,20 @@ export default class Transaction {
     walletId: string,
     targetId: string = 'none',
     description: string = '',
+    createdAt?: string | Date | undefined,
   ) {
+    let newCreatedAt: Date
+    if (typeof createdAt === 'string') {
+      const dateFields = createdAt.split('/')
+      newCreatedAt = new Date()
+      newCreatedAt.setDate(Number(dateFields[0]))
+      newCreatedAt.setMonth(Number(dateFields[1]) - 1)
+      newCreatedAt.setFullYear(Number(dateFields[2]))
+    } else if (createdAt instanceof Date) {
+      newCreatedAt = createdAt
+    } else {
+      newCreatedAt = new Date()
+    }
     return new Transaction(
       crypto.randomUUID(),
       walletId,
@@ -44,7 +57,7 @@ export default class Transaction {
       price,
       targetId,
       description,
-      new Date(),
+      newCreatedAt,
       new Date(),
     )
   }

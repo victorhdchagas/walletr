@@ -12,6 +12,7 @@ import { ProtectedLoader } from './loaders/protected.Loader'
 import WalletRoutes from './wallets/wallets.route'
 import ConfigRoutes from './configRoute/config.route'
 import ErrorPage from '@pages/error.page'
+import { Toaster } from 'react-hot-toast'
 
 export default function ReactRouterIndex() {
   const useCases = useCasesContext()
@@ -76,6 +77,9 @@ export default function ReactRouterIndex() {
   ])
 
   return (
-    <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+    <>
+      <Toaster />
+      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+    </>
   )
 }

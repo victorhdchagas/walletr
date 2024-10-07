@@ -1,3 +1,4 @@
+import GetOrCreatePersonsByNameUseCase from '@core/application/useCases/Person/GetOrCreatePersonsByNameUseCase'
 import AppendOrCreatePersonsUseCase from '@core/application/useCases/Person/appendOrCreatePerson.useCase'
 import CreatePersonsUseCase from '@core/application/useCases/Person/createPerson.useCase'
 import FillPersonInTransactionPersonsUseCase from '@core/application/useCases/Person/fillPersonInTransactionPerson.useCase'
@@ -95,6 +96,7 @@ export const myUseCases = {
     searchByName: new SearchPersonsByNameUseCase(personDexieStorage),
     create: new CreatePersonsUseCase(personDexieStorage),
     appendOrCreate: new AppendOrCreatePersonsUseCase(personDexieStorage),
+    getOrCreateByName: new GetOrCreatePersonsByNameUseCase(personDexieStorage),
     fillTransaction: new FillPersonInTransactionPersonsUseCase(
       personDexieStorage,
     ),

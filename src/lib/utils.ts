@@ -1,6 +1,19 @@
 import Transaction from '@core/domain/entities/Transaction.entity'
 import Wallet from '@core/domain/entities/Wallet.entity'
 
+export function formatCurrencyToNumber(currency: string): number {
+  const isMinus =
+    currency && currency.length > 0 ? currency.indexOf('-') >= 0 : false
+
+  const toReturn = Number(
+    currency
+      .replace(/\./g, '')
+      .replace(',', '.')
+      .replace(/[^\d.]/g, ''),
+  )
+  console.log(toReturn)
+  return isMinus ? toReturn * -1 : toReturn
+}
 export function formatCurrency(value: number) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 }

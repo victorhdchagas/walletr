@@ -1,50 +1,23 @@
+import { CheckboxListItemAtomProps } from '@components/atoms/inputs/checkboxItem.atom'
 import SessionHeaderMolecule from '@components/molecules/sessionHeader.molecule'
 import Template from '@core/domain/entities/Template.entity'
 import Wallet from '@core/domain/entities/Wallet.entity'
 import { formatBytes } from '@lib/utils'
 import Papa, { ParseResult } from 'papaparse'
 import { useEffect, useState } from 'react'
-import {
-  useActionData,
-  useLoaderData,
-  useLocation,
-  useSubmit,
-} from 'react-router-dom'
+import { useLoaderData, useLocation } from 'react-router-dom'
 import ImportWarningComponent from './components/ImportWarning.component'
-import TableComponent, { RawTemplateItem } from './components/Table.component'
-import TemplateItem from '@core/domain/entities/TemplateItem.entity'
-import { ToastIt } from '@components/nativeComponent/toastSuccess'
+import TableComponent from './components/Table.component'
 
-function formatData(
-  data: { [key: string]: string }[],
-  templates: TemplateItem[],
-): RawTemplateItem[] {
-  const toReturn: RawTemplateItem[] = []
+function formatData(data: { [key: string]: string | number }[]) {
+  const toReturn: { [key: string]: string | number }[] = []
   data.forEach((item) => {
-    const toAppend: RawTemplateItem = {
-      name: '',
-      price: '',
-      target: '',
-      category: '',
-      description: '',
-      createdAt: '',
-    }
-    templates.forEach((template) => {
-      toAppend[
-        template.targetName as
-          | 'name'
-          | 'price'
-          | 'target'
-          | 'description'
-          | 'createdAt'
-      ] = item[template.originName]
+    const toAppend: { [key: string]: string | number } = {}
+    Object.keys(item).forEach((key) => {
+      if (key && key.length > 0) {
+        toAppend[key] = item[key]
+      }
     })
-
-    // Object.keys(item).forEach((key) => {
-    //   if (key && key.length > 0) {
-    //     toAppend[key] = item[key]
-    //   }
-    // })
     toReturn.push(toAppend)
   })
 
@@ -52,14 +25,10 @@ function formatData(
 }
 
 export default function FillTemplatePage() {
-  const actionData = useActionData() as
-    | { error?: string; message?: string }
-    | undefined
   const pathname = useLocation().pathname
   const [file, setFile] = useState<File | null>(null)
-  const submit = useSubmit()
-
-  const [data, setData] = useState<RawTemplateItem[]>([])
+  const [headers, setHeaders] = useState<CheckboxListItemAtomProps[]>([])
+  const [data, setData] = useState<{ [key: string]: string | number }[]>([])
   const loader = useLoaderData() as {
     template: Template
     itemmap: string[]
@@ -71,17 +40,6 @@ export default function FillTemplatePage() {
     if (!_file) return
     setFile(_file)
   }
-  useEffect(() => {
-    if (actionData) {
-      if ('error' in actionData) {
-        console.error(actionData.error)
-      }
-      if (actionData.message) {
-        ToastIt({ data: actionData.message, options: { success: true } })
-        console.log(actionData.message)
-      }
-    }
-  }, [actionData])
 
   useEffect(() => {
     if (file) {
@@ -93,37 +51,44 @@ export default function FillTemplatePage() {
           if (value.length > 0) return value.trim()
         },
         complete: async function (
-          results: ParseResult<{ [key: string]: string }>,
+          results: ParseResult<{ [key: string]: string | number }>,
         ) {
-          //   const headers = results.data[0]
+          const headers = results.data[0]
 
-          //   setHeaders(
-          //     Object.keys(headers)
-          //       .filter((v) => v.length > 0)
-          //       .map((value) => ({
-          //         checked: true,
-          //         label: value,
-          //       })),
-          //   )
-          const formattedData = formatData(results.data, loader.template.items)
-          setData(formattedData)
-
-          //   for (const slice of toAsync) {
-          // Devo criar uma rota pra verificar na API se ja tem registros para esse usuario com cada lançamento (enviando de 5 em 5)
-          const formData = new FormData()
-
-          formData.append('file', JSON.stringify(formattedData))
-          submit(formData, {
-            method: 'PATCH',
-            action: pathname,
-            //   headers: {
-            //     'Content-Type': 'application/json',
-            //   },
-          })
-          //   }
+          setHeaders(
+            Object.keys(headers)
+              .filter((v) => v.length > 0)
+              .map((value) => ({
+                checked: true,
+                label: value,
+              })),
+          )
+          setData(formatData(results.data))
+          const toSplice = results.data.slice(0)
+          const toAsync = toSplice.reduce(
+            (acc, _a, _b, arr) => {
+              return [...acc, arr.splice(0, 5)]
+            },
+            [] as {
+              [key: string]: string | number
+            }[][],
+          )
+          if (toSplice.length > 0) toAsync.push(toSplice)
+          console.log(pathname)
+          for await (const slice of toAsync) {
+            // Devo criar uma rota pra verificar na API se ja tem registros para esse usuario com cada lançamento (enviando de 5 em 5)
+            const response = await fetch(pathname, {
+              method: 'PATCH',
+              body: JSON.stringify(slice),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }).then(console.log)
+            console.log(response)
+          }
         },
         error: (error: string) => {
-          console.error(error)
+          console.log(error)
         },
       })
     }
@@ -154,6 +119,15 @@ export default function FillTemplatePage() {
       )}
       <input type="file" accept="text/csv" onChange={onChangeFile} />
 
+      <div className="hidden">
+        {loader.template.items
+          .filter((item) =>
+            headers.map((i) => i.label).includes(item.originName),
+          )
+          .map((item) => (
+            <div key={item.id}>{item.originName}</div>
+          ))}
+      </div>
       <div>
         <ImportWarningComponent
           templateId={loader.template.id}
@@ -161,7 +135,7 @@ export default function FillTemplatePage() {
           templateItems={loader.template.items}
         />
       </div>
-      <TableComponent data={data} />
+      <TableComponent headers={headers} data={data} />
     </section>
   )
 }
