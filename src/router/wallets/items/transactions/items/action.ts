@@ -48,7 +48,7 @@ const TransactionsItemAction: ActionFunction = async ({ request, params }) => {
         return CreateTransactionAction(formData)
       })
   }
-  return redirect(`/account/wallets/${params.walletId}/transactions`)
+  //   return redirect(`/account/wallets/${params.walletId}/transactions`)
 }
 
 export default TransactionsItemAction

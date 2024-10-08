@@ -1,4 +1,6 @@
-import PortalAtom from '@components/atoms/portals/portal.atom'
+import PortalAtom, {
+  PortalAtomProps,
+} from '@components/atoms/portals/portal.atom'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -6,9 +8,22 @@ export default function PortalMolecule({
   children,
   visible = false,
   onClose,
-}: React.PropsWithChildren<{ visible: boolean; onClose?: () => void }>) {
+  closeOnEscape = true,
+}: React.PropsWithChildren<{
+  visible: boolean
+  onClose?: () => void
+  closeOnEscape?: boolean
+}>) {
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose?.()
+    }
+  }
+  const listeners: PortalAtomProps['eventListeners'] | undefined = closeOnEscape
+    ? [{ name: 'keydown', handler: onKeyDown }]
+    : undefined
   return (
-    <PortalAtom>
+    <PortalAtom eventListeners={listeners}>
       <div
         className={twMerge(
           'fixed flex flex-col bg-black bg-opacity-40 h-screen w-screen top-0 left-0 z-10 justify-center items-center backdrop-blur-sm',

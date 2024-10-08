@@ -17,7 +17,7 @@ export default function ListTransactions({
           <th className="min-w-40">Name</th>
           <th className="min-w-24">Price</th>
           <th className="min-w-24">Target</th>
-          <th className="w-full">Description</th>
+          <th className="">Description</th>
 
           <th className="whitespace-nowrap min-w-32 ">Created At</th>
           <th className="whitespace-nowrap min-w-32 ">Updated At</th>
@@ -26,7 +26,7 @@ export default function ListTransactions({
       </thead>
       <tbody>
         {transactions.map((transaction) => (
-          <tr key={transaction.id}>
+          <tr key={transaction.id} className="odd:bg-slate-900 ">
             <td>
               <Link
                 to={`./${transaction.id}`}
@@ -35,7 +35,7 @@ export default function ListTransactions({
                 {transaction.name}
               </Link>
             </td>
-            <td>{formatCurrency(transaction.price)}</td>
+            <td className="h-8 ">{formatCurrency(transaction.price)}</td>
             <td>{transaction.target?.name}</td>
             <td className="overflow-auto">{transaction.description}</td>
             <td>{transaction.createdAt.toLocaleDateString('pt-BR')}</td>

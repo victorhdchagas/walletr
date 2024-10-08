@@ -1,21 +1,24 @@
 import SubmitButtonAtom from '@components/atoms/buttons/submitbutton.atom'
 import Transaction from '@core/domain/entities/Transaction.entity'
-import { useEffect, useRef } from 'react'
-import { Form, Link, useActionData, useNavigate } from 'react-router-dom'
+import { useRef, useState } from 'react'
+import { Form, Link } from 'react-router-dom'
 
 export default function CreateTransaction({
   transaction,
+  persons = [],
 }: {
   transaction: Partial<Transaction>
+  persons: string[]
 }) {
-  const navigate = useNavigate()
+  const [creatingPerson, setCreatingPerson] = useState<boolean>(false)
+  //   const navigate = useNavigate()
 
-  const actionData = useActionData() as
-    | { error?: string; message?: string }
-    | undefined
-  useEffect(() => {
-    if (actionData?.message) navigate(-1)
-  }, [actionData, navigate])
+  //   const actionData = useActionData() as
+  // | { error?: string; message?: string }
+  // | undefined
+  //   useEffect(() => {
+  //     if (actionData?.message) navigate(-1)
+  //   }, [actionData, navigate])
   const { description, id, name, price, walletId, targetId, target } =
     transaction
   const ref = useRef<HTMLFormElement>(null)
@@ -39,7 +42,7 @@ export default function CreateTransaction({
         <input
           type="number"
           id="price"
-          step={0.01}
+          step={0.1}
           name="price"
           defaultValue={price ?? 0}
         />
@@ -55,13 +58,42 @@ export default function CreateTransaction({
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="target">Target</label>
-        <input
-          type="text"
-          id="target"
-          name="target"
-          defaultValue={target?.name || 'none'}
-        />
+        <button
+          type="button"
+          onClick={() => setCreatingPerson((state) => !state)}
+          className="px-2 py-1 rounded-lg border border-slate-200 text-slate-500 hover:bg-opacity-50 transition-colors w-fit"
+        >
+          {!creatingPerson ? 'Criar pessoa' : 'Selecionar pessoa'}
+        </button>
+        {creatingPerson && (
+          <>
+            <label htmlFor="target">Target</label>
+            <input
+              type="text"
+              id="target"
+              name="target"
+              className="h-8 px-2"
+              defaultValue={target?.name || 'none'}
+            />
+          </>
+        )}
+        {!creatingPerson && (
+          <>
+            <label htmlFor="target">Target</label>
+            <select
+              name="target"
+              defaultValue={target?.name || 'none'}
+              className="h-8 px-2"
+            >
+              <option value="none">Ninguém</option>
+              {persons.map((person) => (
+                <option key={person} value={person}>
+                  {person}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
       </div>
       <input type="hidden" id="targetId" defaultValue={targetId} />
       <input

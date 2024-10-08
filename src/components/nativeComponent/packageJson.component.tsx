@@ -1,6 +1,10 @@
-import packageJson from '../../../package.json'
-
-export default function AppDetailsComponent() {
+export default function AppDetailsComponent({
+  name,
+  version,
+}: {
+  name: string
+  version: string
+}) {
   return (
     <table>
       <thead>
@@ -11,8 +15,8 @@ export default function AppDetailsComponent() {
       </thead>
       <tbody>
         <tr>
-          <td>{packageJson.name}</td>
-          <td>{packageJson.version}</td>
+          <td>{name}</td>
+          <td>{version}</td>
         </tr>
       </tbody>
     </table>

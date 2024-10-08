@@ -10,13 +10,10 @@ export default class PersonDexieRepository
   constructor() {
     this.database = new OfflineDatabase()
   }
-  async getByName(name: string): Promise<Person[] | undefined> {
-    return await this.database.persons
-      .where('name')
-      .equalsIgnoreCase(name)
-      .toArray()
+  getByName(name: string): Promise<Person[] | undefined> {
+    return this.database.persons.where('name').equalsIgnoreCase(name).toArray()
   }
-  async getAll(): Promise<Person[]> {
+  getAll(): Promise<Person[]> {
     return this.database.persons.toArray()
   }
   async add(input: Person): Promise<void> {

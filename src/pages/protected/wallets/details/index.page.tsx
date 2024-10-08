@@ -1,23 +1,61 @@
 import Wallet from '@core/domain/entities/Wallet.entity'
 import { formatCurrency } from '@lib/utils'
-import { Link, Outlet, useLoaderData, useLocation } from 'react-router-dom'
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
 import Transaction from '@core/domain/entities/Transaction.entity'
 import SessionHeaderMolecule from '@components/molecules/sessionHeader.molecule'
-import { PlusSquare } from '@phosphor-icons/react'
+import { FileArrowDown, PlusSquare } from '@phosphor-icons/react'
 import ListTransactions from './components/TransactionList.component'
+import PortalMolecule from '@components/molecules/Portal.molecule'
+import { useRef, useState } from 'react'
+import html2canvas from 'html2canvas'
 
 export default function WalletDetailsPage() {
+  const [showModal, setShowModal] = useState(false)
+  const [targetName, setTargetName] = useState<string>('')
+  const router = useNavigate()
+  const printRef = useRef(null)
   const location = useLocation()
   const loaderData = useLoaderData() as {
     wallet: Wallet
     transaction?: Transaction
   }
   const wallet = loaderData.wallet
+  const transactionToList =
+    targetName.length > 0
+      ? wallet.transactions.filter(
+          (transaction) =>
+            transaction.target?.name === targetName.toLowerCase(),
+        )
+      : wallet.transactions
 
-  //   const editingTransaction = loaderData!.transaction
+  const handleDownloadImage = async () => {
+    const element = printRef.current
+    if (!element) return
+    const canvas = await html2canvas(element)
+
+    const data = canvas.toDataURL('image/jpg')
+    const link = document.createElement('a')
+
+    if (typeof link.download === 'string') {
+      link.href = data
+      link.download = `walletr ${targetName} ${wallet.name}.jpg`.toLowerCase()
+
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } else {
+      window.open(data)
+    }
+  }
 
   return (
-    <section>
+    <section className="overflow-auto h-full">
       <SessionHeaderMolecule title={wallet.name}>
         <Link
           to={`/account/wallets/${wallet.id}/transactions/create`}
@@ -55,13 +93,109 @@ export default function WalletDetailsPage() {
           transaction={editingTransaction ?? { walletId: wallet.id }}
         /> */}
       </div>
-      <Link to="/account/wallets">Back</Link>
+      <div className="h-10 w-fit flex gap-2 my-2">
+        <button
+          className="px-2 py-1 rounded-lg border border-slate-200 text-slate-500 hover:bg-opacity-50 transition-colors"
+          onClick={() => router('/account/wallets')}
+        >
+          Voltar
+        </button>
+
+        <div className="flex flex-col w-36">
+          <span className="text-xs">Filtrar por nome</span>
+          <select
+            className="p-1 bg-slate-900 rounded-md focus:scale-125 transition-all"
+            onChange={(e) => setTargetName(e.target.value)}
+          >
+            <option value="">Todas as transações</option>
+            {wallet.transactions
+              .map((transaction) => transaction.target?.name || 'none')
+              .filter((name, index, self) => self.indexOf(name) === index)
+              .map((targetName) => (
+                <option key={targetName} value={targetName}>
+                  {targetName}
+                </option>
+              ))}
+          </select>
+        </div>
+        <button
+          className="px-2 py-1 rounded-lg border border-slate-200 text-slate-500 hover:bg-opacity-50 transition-colors disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-600"
+          disabled={transactionToList.length === 0}
+          onClick={() => setShowModal(true)}
+        >
+          Gerar fatura
+        </button>
+      </div>
       {wallet.transactions.length > 0 && (
         <>
-          <ListTransactions transactions={wallet.transactions} />
+          <ListTransactions transactions={transactionToList} />
           <Link to="/account/wallets">Back</Link>
         </>
       )}
+
+      <PortalMolecule
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        closeOnEscape
+      >
+        <div
+          className="w-[400px] min-h-[600px] border-dashed border  pt-4 rounded-r-lg shadow-2xl  bg-slate-800 text-slate-400 flex flex-col"
+          ref={printRef}
+        >
+          <button
+            type="button"
+            className="fixed bottom-1 right-7 w-fit cursor-pointer rounded-full border-slate-400 border-2 p-2 bg-slate-600 hover:bg-slate-700"
+            onClick={() => handleDownloadImage()}
+          >
+            <FileArrowDown className="h-12 w-12 " />
+          </button>
+          <section className="flex flex-row gap-4 justify-start text-2xl font-semibold items-baseline w-fit flex-nowrap px-4">
+            {/* Section Header */}
+            <img
+              src="/walletr.svg"
+              width="48"
+              height="48"
+              className="w-12 h-12"
+            />
+            <input
+              type="text"
+              defaultValue={wallet.name}
+              className="border-none bg-slate-800 w-3/4"
+            />
+          </section>
+          <section className="flex flex-col gap-2 flex-grow">
+            {transactionToList.map((transaction) => (
+              <div
+                key={transaction.id}
+                className="flex flex-row gap-2  odd:bg-slate-900 px-2"
+              >
+                <div className="flex-grow text-wrap overflow-auto">
+                  {transaction.name}
+                </div>
+                <div className="flex flex-col w-24 text-right flex-wrap">
+                  <span>
+                    {transaction.createdAt.toLocaleDateString('pt-BR', {
+                      timeZone: 'America/sao_paulo',
+                    })}
+                  </span>
+                  <span>{formatCurrency(transaction.price)}</span>
+                </div>
+              </div>
+            ))}
+          </section>
+          <div className=" flex-1 w-full justify-end items-end flex max-h-8 text-right text-xl text-gray-200 flex-grow-0">
+            Total:{' '}
+            {formatCurrency(
+              transactionToList.reduce((_prev, curr) => {
+                return curr.price + _prev
+              }, 0),
+            )}
+          </div>
+          <section className="flex flex-grow-0 flex-1 items-center justify-center text-sm text-gray-500 max-h-8 py-1">
+            Gerado por Walletr.victorhugo.info
+          </section>
+        </div>
+      </PortalMolecule>
       <Outlet />
     </section>
   )
