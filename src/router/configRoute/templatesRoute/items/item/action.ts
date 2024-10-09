@@ -5,6 +5,7 @@ import { ActionFunction } from 'react-router-dom'
 const templateItemAction: ActionFunction = async ({ request, params }) => {
   const formData = Object.fromEntries(await request.formData())
   if (!params.id) throw new Error('Id not found')
+  console.log('templateItemActon', params)
 
   const method = request.method.toLowerCase()
   if (method === 'post') {

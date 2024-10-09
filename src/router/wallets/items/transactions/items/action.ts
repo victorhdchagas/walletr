@@ -6,7 +6,6 @@ import UpdateTransactionAction from '../../../../actions/transactions/update.tra
 const TransactionsItemAction: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData()
   if (!params.walletId) return redirect('/account/wallets')
-  console.log(request.method, Object.fromEntries(formData))
   if (request.method.toLowerCase() === 'delete') {
     if (!formData.get('transactionId'))
       return { error: 'Transaction not found' }
@@ -14,6 +13,7 @@ const TransactionsItemAction: ActionFunction = async ({ request, params }) => {
       await myUseCases.transaction.remove.execute(
         formData.get('transactionId') as string,
       )
+      return { message: 'ok' }
     } catch (error) {
       return { error }
     }

@@ -18,8 +18,21 @@ export default class TransactionDexieRepository
   async update(id: string, transaction: Partial<Transaction>): Promise<void> {
     this.database.transactions.update(id, transaction)
   }
-  async getByWalletId(walletId: string): Promise<Transaction[]> {
-    return this.database.transactions.where({ walletId }).toArray()
+  async getByWalletId(
+    walletId: string,
+    startDate?: Date,
+    endDate?: Date,
+  ): Promise<Transaction[]> {
+    if (startDate && endDate)
+      return this.database.transactions
+        .where('[walletId+createdAt]')
+        .between([walletId, startDate!], [walletId, endDate!])
+        .toArray()
+    return this.database.transactions
+      .where({
+        walletId,
+      })
+      .toArray()
   }
   async create(transaction: Transaction): Promise<void> {
     this.database.transactions.add(transaction)

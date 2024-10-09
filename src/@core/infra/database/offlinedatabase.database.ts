@@ -22,7 +22,7 @@ export default class OfflineDatabase extends Dexie {
     this.version(Number(packageJson.version.replace(/\./g, ''))).stores({
       wallets: 'id, name, createdAt, userId, transactions, &balance',
       transactions:
-        'id, walletId, name, targetId, description, createdAt, updatedAt',
+        'id, walletId, name, targetId, description, createdAt, updatedAt,[walletId+createdAt]',
       persons: 'id, name, createdAt',
       users: 'id, name, createdAt, &email',
       sessions: 'id,token,createdAt,userId',

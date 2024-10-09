@@ -5,7 +5,6 @@ import { RawTemplateItem } from '@pages/protected/wallets/imports/components/Tab
 import { ActionFunction } from 'react-router-dom'
 
 const FillTemplateAction: ActionFunction = async ({ request, params }) => {
-  //   const formData = await request.formData()
   console.log('FillTemplateAction')
   if (!params.walletId) throw new Error('Invalid wallet')
   if (request.method.toLowerCase() === 'patch') {
@@ -16,6 +15,22 @@ const FillTemplateAction: ActionFunction = async ({ request, params }) => {
       const noneUser = await myUseCases.person.getOrCreateByName.execute('none')
       const currentTransactions =
         await myUseCases.transaction.getByWallet.execute(params.walletId)
+
+      if (!file) throw new Error('Invalid file')
+      if (!Array.isArray(file)) throw new Error('Invalid file')
+      if (file.length === 0) throw new Error('Invalid file')
+
+      const Targets = new Map<string, string>()
+      for await (const item of file.filter(
+        (item, index, self) =>
+          self.findIndex((i) => i._target === item._target) === index,
+      )) {
+        if (!item._target) continue
+        const target = await myUseCases.person.getOrCreateByName.execute(
+          item._target?.toLocaleLowerCase(),
+        )
+        Targets.set(item._target, target.id)
+      }
       for await (const item of file) {
         const transaction = Transaction.createInstance(
           item.name,
@@ -23,7 +38,7 @@ const FillTemplateAction: ActionFunction = async ({ request, params }) => {
             ? formatCurrencyToNumber(item.price)
             : item.price,
           params.walletId,
-          noneUser.id,
+          Targets.get(item._target) || noneUser.id,
           item.description,
           item.createdAt,
         )
@@ -38,7 +53,7 @@ const FillTemplateAction: ActionFunction = async ({ request, params }) => {
           if (!transactionFound)
             await myUseCases.transaction.create.execute(transaction)
         } else {
-          console.log(
+          console.error(
             'Not validated transaction',
             transaction.name,
             transaction.price,
@@ -46,6 +61,7 @@ const FillTemplateAction: ActionFunction = async ({ request, params }) => {
         }
       }
     } catch (error) {
+      console.trace(error)
       if (typeof error === 'string') {
         return { error: error ? error : 'Invalid file' }
       } else {

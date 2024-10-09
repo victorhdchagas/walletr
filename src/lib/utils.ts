@@ -2,6 +2,8 @@ import Transaction from '@core/domain/entities/Transaction.entity'
 import Wallet from '@core/domain/entities/Wallet.entity'
 
 export function formatCurrencyToNumber(currency: string): number {
+  if (!isNaN(currency as unknown as number)) return Number(currency)
+
   const isMinus =
     currency && currency.length > 0 ? currency.indexOf('-') >= 0 : false
 
@@ -11,7 +13,6 @@ export function formatCurrencyToNumber(currency: string): number {
       .replace(',', '.')
       .replace(/[^\d.]/g, ''),
   )
-  console.log(toReturn)
   return isMinus ? toReturn * -1 : toReturn
 }
 export function formatCurrency(value: number) {

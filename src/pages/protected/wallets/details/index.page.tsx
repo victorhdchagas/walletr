@@ -6,6 +6,7 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
+  useSearchParams,
 } from 'react-router-dom'
 import Transaction from '@core/domain/entities/Transaction.entity'
 import SessionHeaderMolecule from '@components/molecules/sessionHeader.molecule'
@@ -14,12 +15,15 @@ import ListTransactions from './components/TransactionList.component'
 import PortalMolecule from '@components/molecules/Portal.molecule'
 import { useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
+import SearchMolecule from '@components/molecules/search.molecule'
+import DateAtom from '@components/atoms/inputs/date.atom'
 
 export default function WalletDetailsPage() {
   const [showModal, setShowModal] = useState(false)
   const [targetName, setTargetName] = useState<string>('')
+  const [searchParams] = useSearchParams()
   const router = useNavigate()
-  const printRef = useRef(null)
+  const printRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
   const loaderData = useLoaderData() as {
     wallet: Wallet
@@ -28,16 +32,21 @@ export default function WalletDetailsPage() {
   const wallet = loaderData.wallet
   const transactionToList =
     targetName.length > 0
-      ? wallet.transactions.filter(
-          (transaction) =>
-            transaction.target?.name === targetName.toLowerCase(),
-        )
+      ? wallet.transactions
+          .filter(
+            (transaction) =>
+              transaction.target?.name === targetName.toLowerCase(),
+          )
+          .sort((t) => new Date(t.createdAt).getTime())
       : wallet.transactions
 
   const handleDownloadImage = async () => {
     const element = printRef.current
     if (!element) return
+    element.classList.remove('max-h-[500px]')
+
     const canvas = await html2canvas(element)
+    element.classList.add('max-h-[500px]')
 
     const data = canvas.toDataURL('image/jpg')
     const link = document.createElement('a')
@@ -101,7 +110,7 @@ export default function WalletDetailsPage() {
           Voltar
         </button>
 
-        <div className="flex flex-col w-36">
+        <div className="flex flex-col w-48">
           <span className="text-xs">Filtrar por nome</span>
           <select
             className="p-1 bg-slate-900 rounded-md focus:scale-125 transition-all"
@@ -118,13 +127,32 @@ export default function WalletDetailsPage() {
               ))}
           </select>
         </div>
+
         <button
           className="px-2 py-1 rounded-lg border border-slate-200 text-slate-500 hover:bg-opacity-50 transition-colors disabled:cursor-not-allowed disabled:bg-slate-900 disabled:text-slate-600"
-          disabled={transactionToList.length === 0}
+          disabled={transactionToList.length === 0 || targetName.length === 0}
           onClick={() => setShowModal(true)}
         >
           Gerar fatura
         </button>
+      </div>
+      <div>
+        <SearchMolecule>
+          <DateAtom
+            name="start-date"
+            defaultValue={
+              searchParams.get('start-date') ||
+              new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            }
+          />
+          <DateAtom
+            name="end-date"
+            defaultValue={
+              searchParams.get('end-date') ||
+              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+            }
+          />
+        </SearchMolecule>
       </div>
       {wallet.transactions.length > 0 && (
         <>
@@ -139,7 +167,7 @@ export default function WalletDetailsPage() {
         closeOnEscape
       >
         <div
-          className="w-[400px] min-h-[600px] border-dashed border  pt-4 rounded-r-lg shadow-2xl  bg-slate-800 text-slate-400 flex flex-col"
+          className="w-[400px] min-h-[600px] border-dashed border  pt-4 rounded-r-lg shadow-2xl  bg-slate-800 text-slate-400 flex flex-col  max-h-[500px]"
           ref={printRef}
         >
           <button
@@ -163,7 +191,7 @@ export default function WalletDetailsPage() {
               className="border-none bg-slate-800 w-3/4"
             />
           </section>
-          <section className="flex flex-col gap-2 flex-grow">
+          <section className="flex flex-col gap-2 flex-grow overflow-auto">
             {transactionToList.map((transaction) => (
               <div
                 key={transaction.id}

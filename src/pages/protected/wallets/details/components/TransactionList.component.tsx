@@ -31,21 +31,22 @@ export default function ListTransactions({
               <Link
                 to={`./${transaction.id}`}
                 state={{ backgroundLocation: location }}
+                className="first-letter:uppercase"
               >
                 {transaction.name}
               </Link>
             </td>
             <td className="h-8 ">{formatCurrency(transaction.price)}</td>
-            <td>{transaction.target?.name}</td>
+            <td className="first-letter:uppercase">
+              {transaction.target?.name}
+            </td>
             <td className="overflow-auto">{transaction.description}</td>
             <td>{transaction.createdAt.toLocaleDateString('pt-BR')}</td>
             <td>{transaction.updatedAt.toLocaleDateString('pt-BR')}</td>
             <td>
               <fetcher.Form
                 method="delete"
-                action={`/account/wallets/${
-                  transaction.walletId
-                }/transactions/${transaction.id || 'create'}`}
+                action={`/account/wallets/${transaction.walletId}/transactions/${transaction.id}`}
               >
                 <button
                   type="submit"

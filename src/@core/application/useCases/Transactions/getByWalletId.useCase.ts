@@ -3,7 +3,7 @@ import TransactionRepositoryInterface from '@core/infra/repositories/Transaction
 export default class GetTransactionByWalletIdUseCase {
   constructor(private readonly repository: TransactionRepositoryInterface) {}
 
-  async execute(walletId: string) {
-    return this.repository.getByWalletId(walletId)
+  async execute(walletId: string, startDate?: Date, endDate?: Date) {
+    return this.repository.getByWalletId(walletId, startDate, endDate)
   }
 }

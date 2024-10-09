@@ -1,7 +1,7 @@
 export interface RawTemplateItem {
   name: string
   price: string
-  target: string
+  _target: string
   category: string
   description: string
   createdAt: string

@@ -31,6 +31,10 @@ const WhatsNew: WhatsNewProps[] = [
       'Foi corrigido um bug ao salvar uma transação',
       'Foi adicionado um select no campo de editar/criar transacao para selecionar o alvo ou adicionar manualmente',
       'Foi adicionado um botão para compartilhar as transações filtradas.',
+      'Foi corrigido o algoritmo de detecção de números na importação de CSV',
+      'Foi adicionado o campo "Alvo" no template de importação de CSV',
+      'Foi adicionado um Filtro para período de transações',
+      'Foi corrigido um bug ao excluir transações',
     ],
   },
 ]

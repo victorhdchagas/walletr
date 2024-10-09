@@ -24,7 +24,7 @@ function formatData(
     const toAppend: RawTemplateItem = {
       name: '',
       price: '',
-      target: '',
+      _target: '',
       category: '',
       description: '',
       createdAt: '',
@@ -34,10 +34,10 @@ function formatData(
         template.targetName as
           | 'name'
           | 'price'
-          | 'target'
+          | '_target'
           | 'description'
           | 'createdAt'
-      ] = item[template.originName]
+      ] = item[template.originName.toLowerCase()]
     })
 
     // Object.keys(item).forEach((key) => {
@@ -90,22 +90,15 @@ export default function FillTemplatePage() {
         // preview: 5,
         header: true,
         transform: (value: string) => {
-          if (value.length > 0) return value.trim()
+          if (value.length > 0) return value.trim().toLowerCase()
         },
         complete: async function (
           results: ParseResult<{ [key: string]: string }>,
         ) {
-          //   const headers = results.data[0]
-
-          //   setHeaders(
-          //     Object.keys(headers)
-          //       .filter((v) => v.length > 0)
-          //       .map((value) => ({
-          //         checked: true,
-          //         label: value,
-          //       })),
-          //   )
-          const formattedData = formatData(results.data, loader.template.items)
+          const dataLowercase = JSON.parse(
+            JSON.stringify(results.data).toLowerCase(),
+          )
+          const formattedData = formatData(dataLowercase, loader.template.items)
           setData(formattedData)
 
           //   for (const slice of toAsync) {
